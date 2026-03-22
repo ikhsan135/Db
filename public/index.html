@@ -1,1 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ikhsan Maulana · Premium Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #60a5fa;
+            --bg-dark: #020617;
+            --glass: rgba(15, 23, 42, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-dark);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ANIMASI BACKGROUND MESH (SANGAT RINGAN) */
+        .mesh-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.2) 0px, transparent 50%);
+            animation: meshMove 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes meshMove {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* CONTAINER UTAMA DENGAN GLASSMORPHISM */
+        .main-card {
+            width: 95%;
+            max-width: 600px;
+            height: 92vh;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .scroll-wrapper {
+            flex: 1;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+        .scroll-wrapper::-webkit-scrollbar { display: none; }
+
+        .section {
+            flex: 0 0 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            padding: 2.5rem 1.8rem;
+            overflow-y: auto;
+            color: #e2e8f0;
+        }
+
+        .section::-webkit-scrollbar { width: 3px; }
+        .section::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        /* HEADER ANIMATION */
+        .profile-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-glow {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.2rem;
+        }
+
+        .avatar-glow::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, var(--primary), #00d2ff);
+            border-radius: 50%;
+            animation: rotateGlow 4s linear infinite;
+            opacity: 0.6;
+            filter: blur(8px);
+        }
+
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            border: 3px solid #0f172a;
+        }
+
+        .animated-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* ARTIKEL PANJANG & BERBOBOT */
+        .article-body {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .article-body h3 {
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .article-body p {
+            margin-bottom: 1.2rem;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* BIODATA CARDS */
+        .bio-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .row:last-child { border-bottom: none; }
+        .label { color: #64748b; font-size: 0.9rem; }
+        .value { color: #f1f5f9; font-weight: 600; font-size: 0.9rem; }
+
+        /* BUTTONS & SOCIALS */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .btn-social {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-social:hover {
+            background: var(--primary);
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* NAVBAR BAWAH */
+        .nav-bar {
+            height: 80px;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav-item {
+            border: none;
+            background: none;
+            color: #475569;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .nav-item i { font-size: 1.4rem; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-3px); }
+
+        /* CHIP */
+        .status-chip {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-height: 700px) {
+            .avatar-glow { width: 90px; height: 90px; }
+            .animated-name { font-size: 1.8rem; }
+            .section { padding: 1.5rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg"></div>
+
+    <div class="main-card">
+        <div class="scroll-wrapper" id="slider">
+            
+            <section class="section">
+                <div class="profile-wrapper">
+                    <div class="status-chip">Available to Connect</div>
+                    <div class="avatar-glow">
+                        <img src="https://files.catbox.moe/bahiaj.jpg" class="profile-img" alt="Ikhsan">
+                    </div>
+                    <h1 class="animated-name">Ikhsan Maulana</h1>
+                    <p style="color: #64748b; font-size: 0.85rem;">@ikhsan135 · Sannzz</p>
+                </div>
+
+                <div class="article-body">
+                    <h3><i class="fas fa-terminal"></i> Digital Odyssey</h3>
+                    <p>Selamat datang di ruang digital saya. Saya adalah <strong>Ikhsan Maulana</strong>, seorang individu muda yang lahir pada 17 Oktober 2012. Di balik status saya sebagai pelajar di <strong>MTs Plus RMB</strong>, saya menyimpan gairah besar dalam mengeksplorasi kompleksitas dunia teknologi informasi.</p>
+                    <p>Fokus utama dedikasi saya saat ini tercurah pada pengembangan ekosistem <strong>Dizzanzz</strong>. Ini bukan sekadar nama, melainkan sebuah wadah eksperimen di mana saya menyusun berbagai skrip automasi, sistem manajemen bot, hingga protokol keamanan server. Saya percaya bahwa setiap baris kode yang saya tulis adalah langkah menuju pemahaman yang lebih dalam tentang bagaimana masa depan dibentuk oleh instruksi digital.</p>
+                    <p>Sebagai pengembang muda yang berbasis di Bekasi, saya aktif berkolaborasi di bawah bendera <strong>Ikhsan-Project</strong>. Saya memanfaatkan setiap tantangan teknis—baik itu optimasi performa perangkat keras maupun integrasi sistem operasi—sebagai katalisator untuk mempertajam logika dan kemampuan pemecahan masalah saya.</p>
+                    <p>Portfolio ini adalah bukti perjalanan saya dalam membangun, mencoba, dan terkadang gagal, namun selalu kembali dengan pemahaman yang lebih baik. Mari terhubung dan saksikan bagaimana proyek-proyek kecil ini berkembang menjadi solusi yang lebih besar.</p>
+                </div>
+                <div style="height: 40px;"></div>
+            </section>
+
+            <section class="section">
+                <h2 style="text-align: center; margin-bottom: 1.5rem;">Profile & Activity</h2>
+                
+                <div class="bio-card">
+                    <div class="row"><span class="label">Nama Lengkap</span><span class="value">Ikhsan Maulana</span></div>
+                    <div class="row"><span class="label">Identitas</span><span class="value">Sannzz</span></div>
+                    <div class="row"><span class="label">Domisili</span><span class="value">Bekasi, Indonesia</span></div>
+                    <div class="row"><span class="label">Pendidikan</span><span class="value">MTs Plus RMB</span></div>
+                    <div class="row"><span class="label">GitHub</span><span class="value">ikhsan135</span></div>
+                </div>
+
+                <div class="bio-card" style="border-left: 4px solid var(--primary);">
+                    <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--primary);">Developer Insight</h4>
+                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                        Akun GitHub saya difungsikan sebagai repositori proyek "gabut" dan eksperimen harian. Meskipun jarang terlihat aktif di media sosial, saya tetap memantau perkembangan teknologi dan terbuka untuk diskusi melalui kanal resmi saya.
+                    </p>
+                </div>
+
+                <div class="social-grid">
+                    <a href="https://github.com/ikhsan135" class="btn-social" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://t.me/Ikhsanproject" class="btn-social" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://tiktok.com/@Ikhsan.projectt" class="btn-social" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@Ikhsan-project" class="btn-social" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <p style="font-size: 0.7rem; color: #475569; letter-spacing: 2px;">EST. 2012 · RE-BUILT 2026</p>
+                </div>
+            </section>
+        </div>
+
+        <nav class="nav-bar">
+            <button class="nav-item active" onclick="go(0)" id="n0">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" onclick="go(1)" id="n1">
+                <i class="fas fa-fingerprint"></i>
+                <span>Identity</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const navs = [document.getElementById('n0'), document.getElementById('n1')];
+
+        function go(idx) {
+            slider.scrollTo({ left: slider.clientWidth * idx, behavior: 'smooth' });
+            update(idx);
+        }
+
+        function update(idx) {
+            navs.forEach((n, i) => n.classList.toggle('active', i === idx));
+        }
+
+        slider.addEventListener('scroll', () => {
+            const idx = Math.round(slider.scrollLeft / slider.clientWidth);
+            update(idx);
+        });
+
+        // Mencegah zoom berlebih pada mobile saat double tap
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
